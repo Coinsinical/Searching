@@ -11,15 +11,15 @@ public abstract class SortProgress extends Thread{
     private final int sceneWidth = 800;
     private final int sceneHeight = 400;
 
-    public SortProgress(String title,SelectionSortData data) {
+    public SortProgress(String title,int i,SelectionSortData data) {
         // 初始化数据
         this.data = data;
         // 初始化视图
         if (title.equals("选择排序")){
-            sortFrame = new SelectionSortFrame(title, sceneWidth, sceneHeight,data);
+            sortFrame = new SelectionSortFrame(title+i, sceneWidth, sceneHeight,data);
         }
         else{
-            sortFrame = new InsertionSortFrame(title,sceneWidth, sceneHeight,data);
+            sortFrame = new InsertionSortFrame(title+i,sceneWidth, sceneHeight,data);
         }
 
     }

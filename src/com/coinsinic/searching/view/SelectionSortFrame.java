@@ -40,7 +40,7 @@ public class SelectionSortFrame extends SortFrame {
         //setSize(canvasWidth,canvasHeight);  // 设置窗口大小
         setSize(800,800);
         setResizable(true);  // 窗口可进行缩放
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();  // 窗口大小自适应
         setVisible(true);  // 窗口可见
     }
@@ -92,14 +92,12 @@ public class SelectionSortFrame extends SortFrame {
                 if(i == data.minIndex)  // 当前找到的最小值的元素
                     DrawUtils.setColor(graphics2D,Color.MAGENTA);
                 // 绘制矩形
-                DrawUtils.filledRectangle(graphics2D,i*w,canvasHeight-data.arrays[i],w-1,data.arrays[i]);
+                DrawUtils.filledRectangle(graphics2D,i*w,canvasHeight-80-data.arrays[i],w-1,data.arrays[i]);
             }
         }
-        @Override
-        public Dimension getPreferredSize(){
-            return  new Dimension(canvasWidth,canvasHeight);
-        }
-
     }
-
+    @Override
+    public Dimension getPreferredSize(){
+        return  new Dimension(canvasWidth,canvasHeight);
+    }
 }

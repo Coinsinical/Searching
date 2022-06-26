@@ -5,6 +5,8 @@ import com.coinsinic.searching.util.DrawUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public abstract class SortFrame extends JFrame {
     private int canvasWidth;
@@ -13,6 +15,13 @@ public abstract class SortFrame extends JFrame {
     //private JButton startButton = new JButton("开始");
     public SortFrame(String title){
         super(title);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);//取消主动操作
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose();//点击关闭按钮后关闭当前窗口
+            }
+        });
     }
 
     // 数据内容渲染

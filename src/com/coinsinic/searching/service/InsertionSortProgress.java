@@ -3,8 +3,8 @@ package com.coinsinic.searching.service;
 import com.coinsinic.searching.model.SelectionSortData;
 
 public class InsertionSortProgress extends SortProgress{
-    public InsertionSortProgress(SelectionSortData data) {
-        super("插入排序",data);
+    public InsertionSortProgress(int i,SelectionSortData data) {
+        super("插入排序",i,data);
     }
 
     @Override

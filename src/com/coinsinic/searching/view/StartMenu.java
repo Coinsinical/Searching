@@ -16,10 +16,12 @@ public class StartMenu extends JFrame {
     private SelectionSortData[] data;
     private JPanel jPanel = new JPanel();
 
+    private JLabel ModeLabel = new JLabel("模式");
     private JLabel groupNumAreaLabel = new JLabel("生成数组个数");
     private JLabel randomArraysLabel = new JLabel("随机生成结果");
     private JTextField groupNumField = new JTextField();
     private JTextArea genResultArea = new JTextArea();
+    private JComboBox ModeComboBox=new JComboBox();
     private JScrollPane scrollPane = new JScrollPane(genResultArea);
 
     private JButton okButton = new JButton("确定");
@@ -30,18 +32,31 @@ public class StartMenu extends JFrame {
         setSize(400, 400);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // 窗口居中
 
-        setTitle("生成随机数");
+        setTitle("排序算法可视化");
         add(jPanel);
 
         jPanel.setLayout(null);
 
+        //下拉框添加
+        ModeLabel.setSize(100, 20);
+        ModeLabel.setLocation(50,30);
+        ModeComboBox.setSize(200, 20);
+        ModeComboBox.setLocation(160,35);
+        ModeComboBox.setBackground(Color.WHITE);
+        ModeComboBox.setForeground(Color.BLACK);
+        ModeComboBox.addItem("选择排序");
+        ModeComboBox.addItem("插入排序");
+        ModeComboBox.addItem("并行模式");
 
-        groupNumField.setSize(200, 20);
-        groupNumAreaLabel.setSize(100, 50);
-        groupNumAreaLabel.setLocation(50, 50);
-        groupNumField.setLocation(160, 65);
+        //数组个数输入模块参数设置
+        groupNumField.setSize(200, 20);//输入框大小
+        groupNumAreaLabel.setSize(100, 50);//输入标签大小
+        groupNumAreaLabel.setLocation(50, 70);//输入标签位置
+        groupNumField.setLocation(160, 85);//输入框位置
 
+        //显示生成数组数据模块设置
         genResultArea.setEditable(false);
         genResultArea.setBackground(Color.WHITE);
         randomArraysLabel.setSize(100, 50);
@@ -54,6 +69,8 @@ public class StartMenu extends JFrame {
         jPanel.add(groupNumAreaLabel);
         jPanel.add(randomArraysLabel);
         jPanel.add(scrollPane);
+        jPanel.add(ModeLabel);
+        jPanel.add(ModeComboBox);
 
         //配置按钮大写
         //HistoryButton.setFont(new Font("微软雅黑",Font.PLAIN,15));
@@ -86,49 +103,77 @@ public class StartMenu extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int groupNum = Integer.parseInt(groupNumField.getText()); //获取用户输入
-                //判断是否已经生成数据
-                if (data == null) {
-                    data = new SelectionSortData[groupNum];
+                try {
+                    int groupNum = Integer.parseInt(groupNumField.getText()); //获取用户输入
+                    //判断是否已经生成数据/输入数据是否发生更改
+                    if (data == null||groupNum!=data.length) {
+                        data = new SelectionSortData[groupNum];
 
-                    arr = new int[groupNum][];
-                    for (int i = 0; i < data.length; i++) {
-                        data[i] = new SelectionSortData((int) (Math.random() * 20 + 10), 400);
-                        arr[i] = data[i].arrays;
-                    }
-                    String temp = "";
-                    for (int i = 0; i < arr.length; i++) {
-                        temp += "第" + (i + 1) + "组数据为：";
-                        for (int j = 0; j < arr[i].length; j++) {
-                            temp += arr[i][j] + " ";
+                        arr = new int[groupNum][];
+                        for (int i = 0; i < data.length; i++) {
+                            data[i] = new SelectionSortData((int) (Math.random() * 20 + 10), 300);
+                            arr[i] = data[i].arrays;
                         }
-                        temp += "\n";
-                    }
-                    genResultArea.setText(temp);
-
-                    //储存生成的数组结果
-                    File f = new File("./random.txt");
-                    //检测文件是否存在（只保留一次结果）
-                    if (f.canRead()) {
-                        f.delete();
-                    }
-
-                    try {
-                        if (f.createNewFile()) {
-                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-                            writer.write(temp);
-                            writer.close();
+                        String temp = "";
+                        for (int i = 0; i < arr.length; i++) {
+                            temp += "第" + (i + 1) + "组数据为：";
+                            for (int j = 0; j < arr[i].length; j++) {
+                                temp += arr[i][j] + " ";
+                            }
+                            temp += "\n";
                         }
-                    } catch (IOException error) {
-                        error.printStackTrace();
+                        genResultArea.setText(temp);
+
+                        //储存生成的数组结果
+                        File f = new File("./random.txt");
+                        //检测文件是否存在（只保留一次结果）
+                        if (f.canRead()) {
+                            f.delete();
+                        }
+
+                        try {
+                            if (f.createNewFile()) {
+                                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
+                                writer.write(temp);
+                                writer.close();
+                            }
+                        } catch (IOException error) {
+                            error.printStackTrace();
+                        }
+                        //如果已经生成相关数据，则点击按钮进入排序界面
+                    } else {
+                        String mode = (String)ModeComboBox.getSelectedItem();
+                        InsertionSortProgress[] progresses = new InsertionSortProgress[data.length];
+                        SelectionSortProgress[] progresses1 = new SelectionSortProgress[data.length];
+                        switch (mode){
+                            case "选择排序":
+                                for (int i = 0; i < data.length; i++) {
+                                    progresses1[i] = new SelectionSortProgress(i+1,(SelectionSortData) data[i].clone());
+                                    progresses1[i].start();
+                                }
+                                break;
+                            case "插入排序":
+                                for (int i = 0; i < data.length; i++) {
+                                    progresses[i] = new InsertionSortProgress(i+1,data[i]);
+                                    progresses[i].start();
+                                }
+                                break;
+                            case "并行模式":
+                                for (int i = 0; i < data.length; i++) {
+                                    progresses[i] = new InsertionSortProgress(i+1,data[i]);
+                                    progresses1[i] = new SelectionSortProgress(i+1,(SelectionSortData) data[i].clone());
+                                    progresses1[i].start();
+                                    progresses[i].start();
+                                }
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "请选择模式", "错误", JOptionPane. ERROR_MESSAGE);
+                                break;
+                        }
                     }
-                    //如果已经生成相关数据，则点击按钮进入排序界面
-                } else {
-                    InsertionSortProgress[] progresses = new InsertionSortProgress[data.length];
-                    for (int i = 0; i < data.length; i++) {
-                        progresses[i] = new InsertionSortProgress(data[i]);
-                        progresses[i].start();
-                    }
+                }
+                catch(NumberFormatException exception){
+                    JOptionPane.showMessageDialog(null, "输入的数组个数为空或不合法", "出错啦！", JOptionPane. ERROR_MESSAGE);
                 }
             }
         });
