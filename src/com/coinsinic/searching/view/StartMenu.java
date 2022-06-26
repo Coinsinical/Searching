@@ -72,7 +72,7 @@ public class StartMenu extends JFrame {
         jPanel.add(cancelButton);
         jPanel.add(HistoryButton);
 
-
+        //设置取消按钮功能
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,12 +80,14 @@ public class StartMenu extends JFrame {
             }
         });
 
+        //设置确认按钮功能
         okButton.addActionListener(new ActionListener() {
-            int[][] arr;
+            int[][] arr; //定义数据存储数组
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int groupNum = Integer.parseInt(groupNumField.getText());
+                int groupNum = Integer.parseInt(groupNumField.getText()); //获取用户输入
+                //判断是否已经生成数据
                 if (data == null) {
                     data = new SelectionSortData[groupNum];
 
@@ -120,6 +122,7 @@ public class StartMenu extends JFrame {
                     } catch (IOException error) {
                         error.printStackTrace();
                     }
+                    //如果已经生成相关数据，则点击按钮进入排序界面
                 } else {
                     InsertionSortProgress[] progresses = new InsertionSortProgress[data.length];
                     for (int i = 0; i < data.length; i++) {

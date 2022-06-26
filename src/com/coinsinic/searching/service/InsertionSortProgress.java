@@ -19,11 +19,13 @@ public class InsertionSortProgress extends SortProgress{
                 if (data.arrays[j]<data.arrays[j-1]){
                     data.swap(j,j-1);
                     data.currentIndex = j-1;
+                    data.isMove=true;
                     draw();
                 }
                 else{
                     data.completedIndex=j;
                     data.currentIndex=i;
+                    data.isMove=false;
                     draw();
                     break;
                 }

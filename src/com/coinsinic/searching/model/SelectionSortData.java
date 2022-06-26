@@ -9,6 +9,8 @@ public class SelectionSortData implements Serializable {
     public  int currentIndex = 0; //正在进行比较的数字下标
     public  int minIndex = 0; //目前最小数字下标
 
+    public boolean isMove = true;
+
     public SelectionSortData(int n, int windowHeight) {
         this.arrays = new int[n];
 

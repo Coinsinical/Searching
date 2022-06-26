@@ -1,6 +1,8 @@
 package com.coinsinic.searching.service;
 
 import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.view.InsertionSortFrame;
+import com.coinsinic.searching.view.SelectionSortFrame;
 import com.coinsinic.searching.view.SortFrame;
 
 public abstract class SortProgress extends Thread{
@@ -13,7 +15,13 @@ public abstract class SortProgress extends Thread{
         // 初始化数据
         this.data = data;
         // 初始化视图
-        sortFrame = new SortFrame(title, sceneWidth, sceneHeight,data);
+        if (title.equals("选择排序")){
+            sortFrame = new SelectionSortFrame(title, sceneWidth, sceneHeight,data);
+        }
+        else{
+            sortFrame = new InsertionSortFrame(title,sceneWidth, sceneHeight,data);
+        }
+
     }
 
     public abstract void run();
@@ -34,24 +42,4 @@ public abstract class SortProgress extends Thread{
     public SortFrame getSortFrame() {
         return sortFrame;
     }
-
-    /*
-    public static void main(int N) {
-        SortProgress[] progress = new SortProgress[N];
-        for (int i =0;i<progress.length;i++){
-            progress[i]=new SortProgress(800,400,(int)(Math.random()*20+10));
-            progress[i].start();
-        }
-        /*
-        for (int i =0;i<progress.length;i++){
-            try {
-                progress[i].join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //progress[0].sortFrame.dispose();
-    }
-    */
 }

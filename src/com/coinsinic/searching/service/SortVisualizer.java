@@ -1,17 +1,16 @@
 package com.coinsinic.searching.service;
 
 import com.coinsinic.searching.model.SortData;
-import com.coinsinic.searching.util.DrawUtils;
-import com.coinsinic.searching.view.SortFrame;
+import com.coinsinic.searching.view.SelectionSortFrame;
 
 public class SortVisualizer {
     private SortData data; // 数据
-    private SortFrame sortFrame; // 视图
+    private SelectionSortFrame sortFrame; // 视图
     public SortVisualizer(int sceneWidth,int sceneHeight,int N){
         // 初始化数据
         //data = new SortData(sceneHeight,N);
         // 初始化视图
-        //sortFrame = new SortFrame("选择排序",sceneWidth,sceneHeight);
+        //sortFrame = new SelectionSortFrame("选择排序",sceneWidth,sceneHeight);
         /*
         EventQueue.invokeLater(()->{
             new Thread(()->{
