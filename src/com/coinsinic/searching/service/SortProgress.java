@@ -1,17 +1,17 @@
 package com.coinsinic.searching.service;
 
-import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.model.SortData;
 import com.coinsinic.searching.view.InsertionSortFrame;
 import com.coinsinic.searching.view.SelectionSortFrame;
 import com.coinsinic.searching.view.SortFrame;
 
 public abstract class SortProgress extends Thread{
-    private final SelectionSortData data;
+    private final SortData data;
     private final SortFrame sortFrame; // 视图
     private final int sceneWidth = 800;
     private final int sceneHeight = 400;
 
-    public SortProgress(String title,int i,SelectionSortData data) {
+    public SortProgress(String title, int i, SortData data) {
         // 初始化数据
         this.data = data;
         // 初始化视图
@@ -35,7 +35,7 @@ public abstract class SortProgress extends Thread{
         }
     }
 
-    public SelectionSortData getData() {
+    public SortData getData() {
         return data;
     }
 

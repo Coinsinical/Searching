@@ -1,14 +1,14 @@
 package com.coinsinic.searching.service;
 
-import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.model.SortData;
 
 public class SelectionSortProgress extends SortProgress{
-    public SelectionSortProgress(int i,SelectionSortData data) {
+    public SelectionSortProgress(int i, SortData data) {
         super("选择排序",i,data);
     }
 
     public void run() {
-        SelectionSortData data = getData();
+        SortData data = getData();
         for(int i = 0; i< data.arrays.length; i++){
             draw();
             data.minIndex =i;

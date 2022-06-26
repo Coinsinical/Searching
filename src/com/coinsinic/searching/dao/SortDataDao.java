@@ -1,4 +1,4 @@
 package com.coinsinic.searching.dao;
 
-public class SelectionSortDataDao {
+public class SortDataDao {
 }

@@ -1,15 +1,15 @@
 package com.coinsinic.searching.service;
 
-import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.model.SortData;
 
 public class InsertionSortProgress extends SortProgress{
-    public InsertionSortProgress(int i,SelectionSortData data) {
+    public InsertionSortProgress(int i, SortData data) {
         super("插入排序",i,data);
     }
 
     @Override
     public void run() {
-        SelectionSortData data = getData();
+        SortData data = getData();
         draw();
         //统计在圈内的点数
         for(int i = 1; i < data.arrays.length; i++) {

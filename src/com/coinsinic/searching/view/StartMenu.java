@@ -1,19 +1,17 @@
 package com.coinsinic.searching.view;
 
-import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.model.SortData;
 import com.coinsinic.searching.service.InsertionSortProgress;
 import com.coinsinic.searching.service.SelectionSortProgress;
-import com.coinsinic.searching.service.SortProgress;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.Random;
 
 public class StartMenu extends JFrame {
-    private SelectionSortData[] data;
+    private SortData[] data;
     private JPanel jPanel = new JPanel();
 
     private JLabel ModeLabel = new JLabel("模式");
@@ -107,11 +105,11 @@ public class StartMenu extends JFrame {
                     int groupNum = Integer.parseInt(groupNumField.getText()); //获取用户输入
                     //判断是否已经生成数据/输入数据是否发生更改
                     if (data == null||groupNum!=data.length) {
-                        data = new SelectionSortData[groupNum];
+                        data = new SortData[groupNum];
 
                         arr = new int[groupNum][];
                         for (int i = 0; i < data.length; i++) {
-                            data[i] = new SelectionSortData((int) (Math.random() * 20 + 10), 300);
+                            data[i] = new SortData((int) (Math.random() * 20 + 10), 300);
                             arr[i] = data[i].arrays;
                         }
                         String temp = "";
@@ -148,7 +146,7 @@ public class StartMenu extends JFrame {
                         switch (mode){
                             case "选择排序":
                                 for (int i = 0; i < data.length; i++) {
-                                    progresses1[i] = new SelectionSortProgress(i+1,(SelectionSortData) data[i].clone());
+                                    progresses1[i] = new SelectionSortProgress(i+1,(SortData) data[i].clone());
                                     progresses1[i].start();
                                 }
                                 break;
@@ -161,7 +159,7 @@ public class StartMenu extends JFrame {
                             case "并行模式":
                                 for (int i = 0; i < data.length; i++) {
                                     progresses[i] = new InsertionSortProgress(i+1,data[i]);
-                                    progresses1[i] = new SelectionSortProgress(i+1,(SelectionSortData) data[i].clone());
+                                    progresses1[i] = new SelectionSortProgress(i+1,(SortData) data[i].clone());
                                     progresses1[i].start();
                                     progresses[i].start();
                                 }
@@ -202,9 +200,5 @@ public class StartMenu extends JFrame {
 
             }
         });
-    }
-
-    public static void main(String[] args) {
-        StartMenu startMenu = new StartMenu();
     }
 }

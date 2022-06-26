@@ -2,7 +2,7 @@ package com.coinsinic.searching.model;
 
 import java.io.Serializable;
 
-public class SelectionSortData implements Serializable,Cloneable {
+public class SortData implements Serializable,Cloneable {
     public  int[] arrays; //定义
 
     public  int completedIndex = 0; //已完成排序的数组下标
@@ -11,7 +11,7 @@ public class SelectionSortData implements Serializable,Cloneable {
 
     public boolean isMove = true;
 
-    public SelectionSortData(int n, int windowHeight) {
+    public SortData(int n, int windowHeight) {
         this.arrays = new int[n];
 
         //生成随机数组
@@ -29,9 +29,9 @@ public class SelectionSortData implements Serializable,Cloneable {
     //实现Clonable接口进行数据复制
     @Override
     public Object clone()  {
-        SelectionSortData data = null;
+        SortData data = null;
         try {
-            data = (SelectionSortData) super.clone();
+            data = (SortData) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

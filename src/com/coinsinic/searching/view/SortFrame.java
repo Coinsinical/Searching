@@ -1,6 +1,6 @@
 package com.coinsinic.searching.view;
 
-import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.model.SortData;
 import com.coinsinic.searching.util.DrawUtils;
 
 import javax.swing.*;
@@ -25,8 +25,8 @@ public abstract class SortFrame extends JFrame {
     }
 
     // 数据内容渲染
-    private SelectionSortData data;
-    public void render(SelectionSortData data){
+    private SortData data;
+    public void render(SortData data){
         this.data = data;
         setDataTableData(data);
         repaint();
@@ -35,7 +35,7 @@ public abstract class SortFrame extends JFrame {
     //框架设计
     //表格数据可视化
     //表格数据更新
-    public abstract void setDataTableData(SelectionSortData data);
+    public abstract void setDataTableData(SortData data);
 
 
     private class SortCanvas extends JPanel{

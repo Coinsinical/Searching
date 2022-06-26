@@ -1,6 +1,6 @@
 package com.coinsinic.searching.view;
 
-import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.model.SortData;
 import com.coinsinic.searching.util.DrawUtils;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ public class InsertionSortFrame extends SortFrame {
     private Object[][] tableData = new Object [1][4];
 
     //private JButton startButton = new JButton("开始");
-    public InsertionSortFrame(String title, int canvasWidth, int canvasHeight, SelectionSortData data){
+    public InsertionSortFrame(String title, int canvasWidth, int canvasHeight, SortData data){
         super(title);
         setLayout(new BorderLayout());
 
@@ -46,8 +46,8 @@ public class InsertionSortFrame extends SortFrame {
     }
 
     // 数据内容渲染
-    private SelectionSortData data;
-    public void render(SelectionSortData data){
+    private SortData data;
+    public void render(SortData data){
         this.data = data;
         setDataTableData(data);
         repaint();
@@ -56,7 +56,7 @@ public class InsertionSortFrame extends SortFrame {
     //框架设计
     //表格数据可视化
     //表格数据更新
-    public void setDataTableData(SelectionSortData data){
+    public void setDataTableData(SortData data){
         this.data=data;
         tableData[0][0]=data.completedIndex;
         tableData[0][1]=data.currentIndex+1;
