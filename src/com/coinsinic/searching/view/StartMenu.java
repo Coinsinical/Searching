@@ -1,6 +1,8 @@
 package com.coinsinic.searching.view;
 
 import com.coinsinic.searching.model.SelectionSortData;
+import com.coinsinic.searching.service.InsertionSortProgress;
+import com.coinsinic.searching.service.SelectionSortProgress;
 import com.coinsinic.searching.service.SortProgress;
 
 import javax.swing.*;
@@ -89,7 +91,7 @@ public class StartMenu extends JFrame {
 
                     arr = new int[groupNum][];
                     for (int i = 0; i < data.length; i++) {
-                        data[i] = new SelectionSortData((int) (Math.random() * 20 + 5), 400);
+                        data[i] = new SelectionSortData((int) (Math.random() * 20 + 10), 400);
                         arr[i] = data[i].arrays;
                     }
                     String temp = "";
@@ -119,9 +121,9 @@ public class StartMenu extends JFrame {
                         error.printStackTrace();
                     }
                 } else {
-                    SortProgress[] progresses = new SortProgress[data.length];
+                    InsertionSortProgress[] progresses = new InsertionSortProgress[data.length];
                     for (int i = 0; i < data.length; i++) {
-                        progresses[i] = new SortProgress(800, 400, data[i]);
+                        progresses[i] = new InsertionSortProgress(data[i]);
                         progresses[i].start();
                     }
                 }

@@ -28,7 +28,7 @@ public class SortFrame extends JFrame {
         //menuBar.setPreferredSize(new Dimension(40,0));
         northpanel.add(menuBar);
          */
-        northpanel.setPreferredSize(new Dimension(200,80));
+        northpanel.setPreferredSize(new Dimension(200,40));
 
         //表格
         this.data=data;

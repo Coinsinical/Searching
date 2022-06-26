@@ -3,33 +3,20 @@ package com.coinsinic.searching.service;
 import com.coinsinic.searching.model.SelectionSortData;
 import com.coinsinic.searching.view.SortFrame;
 
-public class SortProgress extends Thread{
+public abstract class SortProgress extends Thread{
     private final SelectionSortData data;
     private final SortFrame sortFrame; // 视图
-    public SortProgress(int sceneWidth,int sceneHeight,SelectionSortData data) {
+    private final int sceneWidth = 800;
+    private final int sceneHeight = 400;
+
+    public SortProgress(String title,SelectionSortData data) {
         // 初始化数据
         this.data = data;
         // 初始化视图
-        sortFrame = new SortFrame("选择排序", sceneWidth, sceneHeight,data);
+        sortFrame = new SortFrame(title, sceneWidth, sceneHeight,data);
     }
 
-    public void run() {
-        for(int i = 0; i< data.arrays.length; i++){
-            draw();
-            data.minIndex =i;
-            System.out.println(i);
-            for (int j = i+1; j< data.arrays.length; j++){
-                data.currentIndex =j;
-                if (data.arrays[j]< data.arrays[data.minIndex]){
-                    data.minIndex =j;
-                }
-                draw();
-            }
-            data.swap(i,data.minIndex);
-            data.completedIndex =i;
-        }
-        draw();
-    }
+    public abstract void run();
 
     public void draw(){
         sortFrame.render(data);
@@ -42,6 +29,10 @@ public class SortProgress extends Thread{
 
     public SelectionSortData getData() {
         return data;
+    }
+
+    public SortFrame getSortFrame() {
+        return sortFrame;
     }
 
     /*
