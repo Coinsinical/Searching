@@ -1,5 +1,6 @@
 package com.coinsinic.searching.view;
 
+import com.coinsinic.searching.dao.SortDataDao;
 import com.coinsinic.searching.model.SortData;
 import com.coinsinic.searching.service.InsertionSortProgress;
 import com.coinsinic.searching.service.SelectionSortProgress;
@@ -9,9 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.*;
 
 public class StartMenu extends JFrame {
+    private int[][] arr; //定义数据存储数组
     private SortData[] data;
     private JPanel jPanel = new JPanel();
 
@@ -40,9 +44,9 @@ public class StartMenu extends JFrame {
 
         //下拉框添加
         ModeLabel.setSize(100, 20);
-        ModeLabel.setLocation(50,30);
+        ModeLabel.setLocation(50, 30);
         ModeComboBox.setSize(200, 20);
-        ModeComboBox.setLocation(160,35);
+        ModeComboBox.setLocation(160, 35);
         ModeComboBox.setBackground(Color.WHITE);
         ModeComboBox.setForeground(Color.BLACK);
         ModeComboBox.addItem("选择排序");
@@ -98,7 +102,7 @@ public class StartMenu extends JFrame {
 
         //设置确认按钮功能
         okButton.addActionListener(new ActionListener() {
-            int[][] arr; //定义数据存储数组
+
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,50 +110,23 @@ public class StartMenu extends JFrame {
                 try {
                     int groupNum = Integer.parseInt(groupNumField.getText()); //获取用户输入
                     //判断是否已经生成数据/输入数据是否发生更改
-                    if (data == null||groupNum!=data.length) {
+                    if (data == null || groupNum != data.length) {
                         data = new SortData[groupNum];
 
                         arr = new int[groupNum][];
+                        //生成随机数组
                         for (int i = 0; i < data.length; i++) {
                             data[i] = new SortData((int) (Math.random() * 20 + 10), 300);
                             arr[i] = data[i].arrays;
                         }
-                        String record = ""+mode+";"+groupNum+";";
-                        String temp = "";
-                        for (int i = 0; i < arr.length; i++) {
-                            temp += "第" + (i + 1) + "组数据为：";
-                            for (int j = 0; j < arr[i].length; j++) {
-                                temp += arr[i][j] + " ";
-                                record += arr[i][j] + " ";
-                            }
-                            temp += "\n";
-                            record +=";";
-                        }
-                        genResultArea.setText(temp);
+                        genResultArea.setText(SortDataDao.saveData(arr, mode, groupNum));
 
-                        //储存生成的数组结果
-                        File f = new File("./random.txt");
-                        //检测文件是否存在（只保留一次结果）
-                        if (f.canRead()) {
-                            f.delete();
-                        }
-
-                        try {
-                            if (f.createNewFile()) {
-                                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-                                writer.write(record);
-                                writer.close();
-                            }
-                        } catch (IOException error) {
-                            error.printStackTrace();
-                        }
                         //如果已经生成相关数据，则点击按钮进入排序界面
                     } else {
                         ChooseMode(mode);
                     }
-                }
-                catch(NumberFormatException exception){
-                    JOptionPane.showMessageDialog(null, "输入的数组个数为空或不合法", "出错啦！", JOptionPane. ERROR_MESSAGE);
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "输入的数组个数为空或不合法", "出错啦！", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -160,32 +137,23 @@ public class StartMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./random.txt")));
-                    String temp;
-                    if ((temp = br.readLine()) != null) {
-                        System.out.println(temp);
-                        br.close();
-                        String tempArr[] = temp.split(";");
-                        int mode=Integer.parseInt(tempArr[0]);
-                        int groupnumber=Integer.parseInt(tempArr[1]);
-                        data = new SortData[groupnumber];
-                        for (int i=0;i< tempArr.length-2;i++){
-                            String[] strings=tempArr[i+2].split(" ");
-                            int[] ints=new int[strings.length];
-                            for(int j=0;j<ints.length;j++){
-                                ints[j]=Integer.parseInt(strings[j]);
-                            }
-                            data[i]=new SortData(ints);
-                        }
-                        ChooseMode(mode);
-                    }
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                    ChooseMode(SortDataDao.parseData(data));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-
             }
         });
-        }
+
+        ModeComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(!groupNumField.getText().equals(""))
+                SortDataDao.saveData(arr,ModeComboBox.getSelectedIndex(),Integer.parseInt(groupNumField.getText()));
+            }
+        });
+    }
+
+
 
     public void ChooseMode(int mode){
         SortProgress[] progresses = new InsertionSortProgress[data.length];
