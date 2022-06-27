@@ -3,6 +3,7 @@ package com.coinsinic.searching.view;
 import com.coinsinic.searching.model.SortData;
 import com.coinsinic.searching.service.InsertionSortProgress;
 import com.coinsinic.searching.service.SelectionSortProgress;
+import com.coinsinic.searching.service.SortProgress;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,6 +102,7 @@ public class StartMenu extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                int mode = ModeComboBox.getSelectedIndex();
                 try {
                     int groupNum = Integer.parseInt(groupNumField.getText()); //获取用户输入
                     //判断是否已经生成数据/输入数据是否发生更改
@@ -112,13 +114,16 @@ public class StartMenu extends JFrame {
                             data[i] = new SortData((int) (Math.random() * 20 + 10), 300);
                             arr[i] = data[i].arrays;
                         }
+                        String record = ""+mode+";"+groupNum+";";
                         String temp = "";
                         for (int i = 0; i < arr.length; i++) {
                             temp += "第" + (i + 1) + "组数据为：";
                             for (int j = 0; j < arr[i].length; j++) {
                                 temp += arr[i][j] + " ";
+                                record += arr[i][j] + " ";
                             }
                             temp += "\n";
+                            record +=";";
                         }
                         genResultArea.setText(temp);
 
@@ -132,7 +137,7 @@ public class StartMenu extends JFrame {
                         try {
                             if (f.createNewFile()) {
                                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-                                writer.write(temp);
+                                writer.write(record);
                                 writer.close();
                             }
                         } catch (IOException error) {
@@ -140,34 +145,7 @@ public class StartMenu extends JFrame {
                         }
                         //如果已经生成相关数据，则点击按钮进入排序界面
                     } else {
-                        String mode = (String)ModeComboBox.getSelectedItem();
-                        InsertionSortProgress[] progresses = new InsertionSortProgress[data.length];
-                        SelectionSortProgress[] progresses1 = new SelectionSortProgress[data.length];
-                        switch (mode){
-                            case "选择排序":
-                                for (int i = 0; i < data.length; i++) {
-                                    progresses1[i] = new SelectionSortProgress(i+1,(SortData) data[i].clone());
-                                    progresses1[i].start();
-                                }
-                                break;
-                            case "插入排序":
-                                for (int i = 0; i < data.length; i++) {
-                                    progresses[i] = new InsertionSortProgress(i+1,data[i]);
-                                    progresses[i].start();
-                                }
-                                break;
-                            case "并行模式":
-                                for (int i = 0; i < data.length; i++) {
-                                    progresses[i] = new InsertionSortProgress(i+1,data[i]);
-                                    progresses1[i] = new SelectionSortProgress(i+1,(SortData) data[i].clone());
-                                    progresses1[i].start();
-                                    progresses[i].start();
-                                }
-                                break;
-                            default:
-                                JOptionPane.showMessageDialog(null, "请选择模式", "错误", JOptionPane. ERROR_MESSAGE);
-                                break;
-                        }
+                        ChooseMode(mode);
                     }
                 }
                 catch(NumberFormatException exception){
@@ -182,23 +160,60 @@ public class StartMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./save.txt")));
+                    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./random.txt")));
                     String temp;
                     if ((temp = br.readLine()) != null) {
+                        System.out.println(temp);
                         br.close();
-                        String tempArr[] = temp.split("：");
-                        int arr[] = new int[tempArr.length];
-                        for (int i = 0; i < arr.length; i++) {
-                            arr[i] = Integer.parseInt(tempArr[i]);
+                        String tempArr[] = temp.split(";");
+                        int mode=Integer.parseInt(tempArr[0]);
+                        int groupnumber=Integer.parseInt(tempArr[1]);
+                        data = new SortData[groupnumber];
+                        for (int i=0;i< tempArr.length-2;i++){
+                            String[] strings=tempArr[i+2].split(" ");
+                            int[] ints=new int[strings.length];
+                            for(int j=0;j<ints.length;j++){
+                                ints[j]=Integer.parseInt(strings[j]);
+                            }
+                            data[i]=new SortData(ints);
                         }
-                        //new ChoiceAlgorithm(arr);
+                        ChooseMode(mode);
                     }
-
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
 
             }
         });
+        }
+
+    public void ChooseMode(int mode){
+        SortProgress[] progresses = new InsertionSortProgress[data.length];
+        SortProgress[] progresses1 = new SelectionSortProgress[data.length];
+        switch (mode) {
+            case 0:
+                for (int i = 0; i < data.length; i++) {
+                    progresses1[i] = new SelectionSortProgress(i + 1, (SortData) data[i].clone());
+                    progresses1[i].start();
+                }
+                break;
+            case 1:
+                for (int i = 0; i < data.length; i++) {
+                    progresses[i] = new InsertionSortProgress(i + 1, data[i]);
+                    progresses[i].start();
+                }
+                break;
+            case 2:
+                for (int i = 0; i < data.length; i++) {
+                    progresses[i] = new InsertionSortProgress(i + 1, data[i]);
+                    progresses1[i] = new SelectionSortProgress(i + 1, (SortData) data[i].clone());
+                    progresses1[i].start();
+                    progresses[i].start();
+                }
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "请选择模式", "错误", JOptionPane.ERROR_MESSAGE);
+                break;
+        }
     }
 }

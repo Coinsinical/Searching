@@ -19,6 +19,9 @@ public class SortData implements Serializable,Cloneable {
             arrays[i] = (int) (Math.random() * windowHeight + 1);
         }
     }
+    public SortData(int[] arrays){
+        this.arrays=arrays;
+    }
 
     public void swap(int i, int j) {
         int tmp = arrays[i];
